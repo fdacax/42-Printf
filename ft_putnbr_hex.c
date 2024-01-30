@@ -6,7 +6,7 @@
 /*   By: fdacax-m <fdacax-m@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 18:56:42 by fdacax-m          #+#    #+#             */
-/*   Updated: 2023/11/14 19:31:51 by fdacax-m         ###   ########.fr       */
+/*   Updated: 2023/11/06 18:47:50 by fdacax-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,18 +25,18 @@ void	ft_check_format(char format, va_list arg, int *i)
 			return ;
 		}
 		ft_putstr("0x", i);
-		ft_put_hex(format, nb, i);
+		ft_put_pointer(nb, i);
 	}
 	else
 		ft_put_hex(format, va_arg(arg, unsigned int), i);
 }
 
-void	ft_put_hex(char format, unsigned long nb, int *i)
+void	ft_put_hex(char format, unsigned int nb, int *i)
 {
 	char			*hex;
-	unsigned long	j;
+	unsigned int	j;
 
-	if (format == 'x' || format == 'p')
+	if (format == 'x')
 		hex = "0123456789abcdef";
 	else
 		hex = "0123456789ABCDEF";
@@ -46,7 +46,7 @@ void	ft_put_hex(char format, unsigned long nb, int *i)
 	ft_putchar(hex[j], i);
 }
 
-/* void	ft_put_pointer(unsigned long nb, int *i)
+void	ft_put_pointer(unsigned long nb, int *i)
 {
 	char			*hex;
 	unsigned int	j;
@@ -56,4 +56,4 @@ void	ft_put_hex(char format, unsigned long nb, int *i)
 		ft_put_pointer(nb / 16, i);
 	j = nb % 16;
 	ft_putchar(hex[j], i);
-} */
+}
