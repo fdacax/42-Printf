@@ -62,30 +62,6 @@ Example:
 ft_printf("Hello %s, you are %d years old (%x)\n", "world", 42, 42);
 ```
 
-## Algorithm and data structure
-
-### Overall approach
-
-`ft_printf` walks through the format string one character at a time. Characters that are not part of a conversion are written directly to the standard output. When a `%` is found, the next character is read as the specifier and the function dispatches to the handler for that conversion, which reads the corresponding argument from the `va_list` and writes it.
-
-Each handler returns the number of characters it wrote, and `ft_printf` adds these values to a running counter that is returned at the end. If a `write` call fails, the error is propagated and `-1` is returned.
-
-### Why this approach
-
-- **Single pass, no buffer.** The format string is read once, from start to end. The subject asks for no buffer management, so every piece of output is written as soon as it is known. This keeps the code simple and the behavior predictable, at the cost of more `write` calls.
-- **One handler per specifier.** Keeping each conversion in its own small function makes it easy to test them separately and to add a new specifier without touching the others.
-- **Recursive base conversion.** Numbers are converted to text by dividing by the base and printing the most significant digit first. This avoids allocating a temporary buffer and works for decimal and hexadecimal with the same logic, only changing the base and the digit set.
-
-### Data structures
-
-No custom data structure is needed. The function only relies on:
-
-- `va_list`, to iterate over the variadic arguments in order;
-- a plain `int` counter, to accumulate the number of printed characters;
-- constant strings (`"0123456789"`, `"0123456789abcdef"`, `"0123456789ABCDEF"`) used as lookup tables for digit conversion.
-
-Anything more complex (a buffer, a list of parsed tokens, a struct of flags) would add allocation and cleanup without bringing a benefit for the mandatory part, where there are no flags, width or precision to store.
-
 ### Edge cases
 
 - `%s` with a `NULL` pointer prints `(null)`, like the original.
